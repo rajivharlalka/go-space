@@ -4,9 +4,15 @@ import (
 	"bytes"
 	"encoding/json"
 	"fmt"
+	"io"
+	"io/ioutil"
 	"log"
+	"mime/multipart"
 	"net/http"
+	"os"
 	"strings"
+
+	utils "rajivharlalka/imagery-v2/utils"
 
 	"github.com/gofiber/fiber/v2"
 	"github.com/slack-go/slack"
@@ -29,10 +35,7 @@ func sendEphemeral(data *slack.File) {
 	action_1 := slack.AttachmentAction{Name: createResponseString(data.User, data.Channels[0], data.ID, data.URLPrivate, "test_comment", data.Timestamp.String()), Value: "Yes", Text: "Yes,Save Space", Type: "button"}
 	action_2 := slack.AttachmentAction{Name: "No", Value: "no", Text: "No,This Image is Private", Type: "button", Style: "danger"}
 	ephmeral_attachment_data.Actions = []slack.AttachmentAction{action_1, action_2}
-	// err = api.DeleteFile(ev.FileID)
-	// if err != nil {
-	// 	fmt.Print(err)
-	// }
+
 	_, err := api.PostEphemeral(data.Channels[0], data.User, slack.MsgOptionAttachments(ephmeral_attachment_data))
 	if err != nil {
 		fmt.Print(err)
@@ -84,6 +87,35 @@ func formatJSON(data []byte) ([]byte, error) {
 	return data, nil
 }
 
+func upload(image io.Reader, token string) utils.Imgur_data {
+	buf := new(bytes.Buffer)
+	writer := multipart.NewWriter(buf)
+
+	part, _ := writer.CreateFormFile("image", "dont care about name")
+	io.Copy(part, image)
+
+	writer.Close()
+	req, _ := http.NewRequest("POST", "https://api.imgur.com/3/image", buf)
+	req.Header.Set("Content-Type", writer.FormDataContentType())
+	req.Header.Set("Authorization", token)
+
+	client := &http.Client{}
+	res, err := client.Do(req)
+	if err != nil {
+		panic(err)
+	}
+
+	defer res.Body.Close()
+	b, _ := ioutil.ReadAll(res.Body)
+
+	var data utils.Imgur_data
+	err = json.Unmarshal(b, &data)
+	if err != nil {
+		fmt.Print(err)
+	}
+	return data
+}
+
 func downloadFile(permaLink string, file_id string, channel_id string, comment string, user_id string, timestamp string) {
 	fmt.Printf("PermaLink 2 %s\n", permaLink)
 	// types, err := os.Create("hello123.png")
@@ -92,7 +124,21 @@ func downloadFile(permaLink string, file_id string, channel_id string, comment s
 		fmt.Print(err)
 		return
 	}
-	fmt.Print(buf.Bytes())
+	// upload to imgur
+	token := "Client-ID " + os.Getenv("IMGUR_CLIENT_ID")
+
+	data := upload(buf, token)
+	fmt.Print(data)
+
+	text := "Posted By <@" + user_id + ">\n" + data.Data.Link
+
+	api.SendMessage(channel_id, slack.MsgOptionText(text, false))
+
+	// Delete File
+	err := api.DeleteFile(file_id)
+	if err != nil {
+		fmt.Print(err)
+	}
 	return
 }
 
@@ -111,14 +157,6 @@ func activityRoute(c *fiber.Ctx) error {
 	} else {
 		fmt.Print("---------NO SELECTED----------")
 	}
-
-	// fmt.Print(types.ActionCallback, "hello\n")
-	// prettyJSON, err := formatJSON([]byte(c.FormValue("payload")))
-	// if err != nil {
-	// 	log.Fatal(err)
-	// }
-
-	// fmt.Println(string(prettyJSON))
 
 	res := slack.WebhookMessage{ResponseType: "ephemeral", ReplaceOriginal: true, DeleteOriginal: true}
 	return c.JSON(res)
