@@ -38,18 +38,15 @@ func ActivityRoute(c *fiber.Ctx) error {
 }
 
 func downloadFile(permaLink string, file_id string, channel_id string, comment string, user_id string, timestamp string) {
-	fmt.Printf("PermaLink 2 %s\n", permaLink)
 	// types, err := os.Create("hello123.png")
 	buf := new(bytes.Buffer)
 	if err := utils.Api.GetFile(permaLink, buf); err != nil {
-		fmt.Print(err)
-		return
+		panic(err)
 	}
 	// upload to imgur
 	token := "Client-ID " + os.Getenv("IMGUR_CLIENT_ID")
 
 	data := upload(buf, token)
-	fmt.Print(data)
 
 	text := "Posted By <@" + user_id + ">\n" + data.Data.Link
 
@@ -58,7 +55,7 @@ func downloadFile(permaLink string, file_id string, channel_id string, comment s
 	// Delete File
 	err := utils.Api.DeleteFile(file_id)
 	if err != nil {
-		fmt.Print(err)
+		panic(err)
 	}
 	return
 }
@@ -87,7 +84,7 @@ func upload(image io.Reader, token string) utils.Imgur_data {
 	var data utils.Imgur_data
 	err = json.Unmarshal(b, &data)
 	if err != nil {
-		fmt.Print(err)
+		panic(err)
 	}
 	return data
 }
