@@ -2,7 +2,9 @@ package routes
 
 import (
 	"encoding/json"
+	"fmt"
 	"net/http"
+	"regexp"
 
 	"rajivharlalka/imagery-v2/utils"
 
@@ -10,6 +12,8 @@ import (
 	"github.com/slack-go/slack"
 	"github.com/slack-go/slack/slackevents"
 )
+
+const username_regex = "Posted By <@+.*>"
 
 func RootRoute(c *fiber.Ctx) error {
 	body := c.Body()
@@ -40,6 +44,31 @@ func RootRoute(c *fiber.Ctx) error {
 			}
 
 			go sendEphemeral(data)
+		case *slackevents.ReactionAddedEvent:
+			if ev.Reaction == "x" {
+				var conversation_history_data slack.GetConversationHistoryParameters
+				conversation_history_data.ChannelID = ev.Item.Channel
+				conversation_history_data.Inclusive = true
+				conversation_history_data.Limit = 1
+				conversation_history_data.Latest = ev.Item.Timestamp
+				data, err := utils.Api.GetConversationHistory(&conversation_history_data)
+				if err != nil {
+					fmt.Println(err)
+				} else {
+					r, _ := regexp.Compile(username_regex)
+					match_string := r.FindString(data.Messages[0].Text)
+					if len(match_string) == 0 {
+						return nil
+					}
+					posted_user_id := match_string[12 : len(match_string)-1]
+					if posted_user_id == ev.User {
+						_, _, err := utils.Api.DeleteMessage(ev.Item.Channel, ev.Item.Timestamp)
+						if err != nil {
+							fmt.Println(err)
+						}
+					}
+				}
+			}
 		}
 	}
 
