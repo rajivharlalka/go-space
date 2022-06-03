@@ -9,6 +9,7 @@ import (
 )
 
 func main() {
+
 	app := fiber.New()
 
 	app.Post("/app", routes.RootRoute)

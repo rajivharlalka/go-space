@@ -16,6 +16,8 @@ import (
 const username_regex = "Posted By <@+.*>"
 
 func RootRoute(c *fiber.Ctx) error {
+	defer utils.RecoverServer()
+
 	body := c.Body()
 
 	eventsAPIEvent, err := slackevents.ParseEvent(json.RawMessage(body), slackevents.OptionNoVerifyToken())
@@ -80,6 +82,7 @@ func createResponseString(user_id string, channel_id string, file_id string, fil
 }
 
 func sendEphemeral(data *slack.File) {
+	defer utils.RecoverServer()
 
 	var ephmeral_attachment_data slack.Attachment
 	ephmeral_attachment_data.CallbackID = "ephemeral_action"

@@ -18,6 +18,8 @@ import (
 )
 
 func ActivityRoute(c *fiber.Ctx) error {
+	defer utils.RecoverServer()
+
 	var types *slack.InteractionCallback
 	if err := json.Unmarshal([]byte(c.FormValue("payload")), &types); err != nil {
 		return err
@@ -38,6 +40,7 @@ func ActivityRoute(c *fiber.Ctx) error {
 }
 
 func downloadFile(permaLink string, file_id string, channel_id string, comment string, user_id string, timestamp string) {
+	defer utils.RecoverServer()
 	// types, err := os.Create("hello123.png")
 	buf := new(bytes.Buffer)
 	if err := utils.Api.GetFile(permaLink, buf); err != nil {
@@ -65,6 +68,8 @@ func downloadFile(permaLink string, file_id string, channel_id string, comment s
 }
 
 func upload(image io.Reader, token string) utils.Imgur_data {
+	defer utils.RecoverServer()
+
 	buf := new(bytes.Buffer)
 	writer := multipart.NewWriter(buf)
 
