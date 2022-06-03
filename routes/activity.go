@@ -57,7 +57,11 @@ func downloadFile(permaLink string, file_id string, channel_id string, comment s
 	if err != nil {
 		panic(err)
 	}
-	return
+
+	_, _, error := utils.Api.DeleteMessage(channel_id, timestamp)
+	if err != nil && error.Error() != "message_not_found" {
+		panic(error)
+	}
 }
 
 func upload(image io.Reader, token string) utils.Imgur_data {
