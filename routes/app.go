@@ -5,6 +5,7 @@ import (
 	"fmt"
 	"net/http"
 	"regexp"
+	"strings"
 
 	"rajivharlalka/imagery-v2/utils"
 
@@ -45,7 +46,10 @@ func RootRoute(c *fiber.Ctx) error {
 				panic(err)
 			}
 
-			go sendEphemeral(data)
+			if strings.Split(data.Mimetype, "/")[0] == "image" && (data.Size/(1024*1024) < 20) {
+				go sendEphemeral(data)
+			}
+
 		case *slackevents.ReactionAddedEvent:
 			if ev.Reaction == "x" {
 				var conversation_history_data slack.GetConversationHistoryParameters
