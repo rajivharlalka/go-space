@@ -48,7 +48,7 @@ func downloadFile(permaLink string, file_id string, channel_id string, comment s
 
 	data := upload(buf, token)
 
-	text := "Posted By <@" + user_id + ">\n" + data.Data.Link
+	text := "Posted By <@" + user_id + ">\n" + data.Data.Link + "\n" + comment
 
 	utils.Api.SendMessage(channel_id, slack.MsgOptionText(text, false))
 

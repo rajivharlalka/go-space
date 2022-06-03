@@ -80,11 +80,24 @@ func createResponseString(user_id string, channel_id string, file_id string, fil
 }
 
 func sendEphemeral(data *slack.File) {
+
 	var ephmeral_attachment_data slack.Attachment
 	ephmeral_attachment_data.CallbackID = "ephemeral_action"
 	ephmeral_attachment_data.Text = "Would you like to upload this image to imgur?"
+
+	var channel_id = data.Channels[0]
+	var timestamp = data.Shares.Public[channel_id][0].Ts
+
 	// GET COMMENT ON IMAGE
-	action_1 := slack.AttachmentAction{Name: createResponseString(data.User, data.Channels[0], data.ID, data.URLPrivate, "test_comment", data.Shares.Public[data.Channels[0]][0].Ts), Value: "Yes", Text: "Yes,Save Space", Type: "button"}
+	var conversation_reply_parameters slack.GetConversationRepliesParameters
+	conversation_reply_parameters.ChannelID = channel_id
+	conversation_reply_parameters.Timestamp = timestamp
+	messages, _, _, error := utils.Api.GetConversationReplies(&conversation_reply_parameters)
+	if error != nil {
+		panic(error)
+	}
+
+	action_1 := slack.AttachmentAction{Name: createResponseString(data.User, channel_id, data.ID, data.URLPrivate, messages[0].Text, timestamp), Value: "Yes", Text: "Yes,Save Space", Type: "button"}
 	action_2 := slack.AttachmentAction{Name: "No", Value: "no", Text: "No,This Image is Private", Type: "button", Style: "danger"}
 	ephmeral_attachment_data.Actions = []slack.AttachmentAction{action_1, action_2}
 
