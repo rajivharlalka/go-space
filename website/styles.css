@@ -1,0 +1,44 @@
+* {
+    margin: 0;
+    padding: 0;
+    box-sizing: border-box;
+}
+
+body {
+    background-color: #191A19;
+    font-family: 'Noto Emoji', sans-serif;
+    font-family: 'Roboto', sans-serif;
+    overflow: hidden;
+}
+
+.content {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    margin: 2rem auto;
+}
+
+.title {
+    background: linear-gradient(to bottom right, #242F9B, #34B3F1);
+    background-clip: text;
+    -webkit-background-clip: text;
+    -webkit-text-fill-color: transparent;
+    color: #34B3F1;
+    font-size: 4rem;
+    margin: 0.8rem;
+}
+
+.subtitle {
+    color: #A5BECC;
+    font-size: 1.4rem;
+    font-weight: 400;
+    margin: 0.5rem;
+}
+
+.gopher {
+    position: absolute;
+    bottom: -2rem;
+    right: -2rem;
+    width: 15rem;
+    transform: rotateZ(-30deg);
+}
