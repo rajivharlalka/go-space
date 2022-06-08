@@ -2,20 +2,41 @@
     margin: 0;
     padding: 0;
     box-sizing: border-box;
+    scrollbar-width: thin;
+}
+
+*::-webkit-scrollbar-track {
+    border-radius: 100px;
+}
+
+*::-webkit-scrollbar {
+    width: 8px;
+}
+
+*::-webkit-scrollbar-thumb {
+    background: linear-gradient(to bottom right, #242F9B, #34B3F1);
+    border-radius: 100px;
 }
 
 body {
     background-color: #191A19;
     font-family: 'Noto Emoji', sans-serif;
     font-family: 'Roboto', sans-serif;
-    overflow: hidden;
+    overflow-x: hidden;
+    scrollbar-gutter: stable;
 }
 
 .content {
+    width: 60rem;
+    max-width: 95%;
     display: flex;
     flex-direction: column;
-    align-items: center;
     margin: 2rem auto;
+    color: #A5BECC;
+}
+
+.content p {
+    font-size: 1.4rem;
 }
 
 .title {
@@ -25,20 +46,62 @@ body {
     -webkit-text-fill-color: transparent;
     color: #34B3F1;
     font-size: 4rem;
+    font-weight: 500;
     margin: 0.8rem;
+    text-align: center;
 }
 
 .subtitle {
     color: #A5BECC;
-    font-size: 1.4rem;
+    font-size: 1.6rem;
     font-weight: 400;
-    margin: 0.5rem;
+    margin: 0.2rem 0 2.5rem 0;
+    text-align: center;
 }
 
 .gopher {
-    position: absolute;
+    position: fixed;
     bottom: -2rem;
-    right: -2rem;
+    left: -2rem;
     width: 15rem;
-    transform: rotateZ(-30deg);
+    transform: rotateZ(30deg);
+    opacity: 70%;
+}
+
+.content pre code {
+    white-space: pre-line;
+    border-radius: 10px;
+    padding-top: 0 !important;
+    scrollbar-gutter: stable;
+    font-family: 'Roboto Mono', monospace;
+}
+
+.content pre .wrap-exception {
+    white-space: nowrap;
+    padding-top: 1em !important;
+}
+
+.content p {
+    margin: 0.8rem 0;
+}
+
+.content h2 {
+    margin: 2rem 0 0.5rem 0;
+    font-size: 2.5rem;
+}
+
+.content h3 {
+    margin: 1.5rem 0 0.5rem 0;
+    font-size: 2rem;
+}
+
+.content h4 {
+    margin: 1rem 0 0.3rem 0;
+    font-size: 1.5rem;
+}
+
+a {
+    color: #34B3F1;
+    font-style: italic;
+    opacity: 70%;
 }

@@ -7,15 +7,58 @@
     <meta name="theme-color" content="#191A19">
     <link rel="preconnect" href="https://fonts.googleapis.com">
     <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
-    <link href="https://fonts.googleapis.com/css2?family=Noto+Emoji&family=Roboto:ital,wght@0,100;0,300;0,400;0,500;0,700;0,900;1,100;1,300;1,400;1,500;1,700;1,900&display=swap" rel="stylesheet">
+    <link href="https://fonts.googleapis.com/css2?family=Noto+Emoji&family=Roboto+Mono&family=Roboto:ital,wght@0,100;0,300;0,400;0,500;0,700;0,900;1,100;1,300;1,400;1,500;1,700;1,900&display=swap" rel="stylesheet">
     <link rel="stylesheet" href="styles.css">
+    <link rel="stylesheet" href="//cdnjs.cloudflare.com/ajax/libs/highlight.js/11.5.1/styles/atom-one-dark.min.css">
+    <script src="//cdnjs.cloudflare.com/ajax/libs/highlight.js/11.5.1/highlight.min.js"></script>
     <title>Go-space</title>
 </head>
 <body>
     <div class="content">
         <div class="title">Go-space</div>
         <div class="subtitle">Running out of slack storage? Call me 😌.</div>
+        <p>Ever felt short of file storage while using slack? I (we at <a href="https://kossiitkgp.org">KOSS</a>) did. So <a href="https://github.com/dibyadas">Dibya Das</a> made <a href="https://github.com/dibyadas/imagery">Imagery</a>. </p>
+        <p>So after tinkering around with Golang, wanted to learn by doing and Imagery had some issues due to some api changes on slack. So what could be better than re-writing the entire thing on go :rocket:.</p>
+        <h2 id="installation">Installation</h2>
+        <h3 id="using-docker">Using Docker</h3>
+        <p>To create a docker file and push to dockerhub</p>
+        <pre>
+        <code>
+            $ git clone https://github.com/rajivharlalka/go-space.git
+            $ cd go-space
+            $ docker build -t &lt;dockerhub-username&gt;/go-space:v1 .
+            $ docker push &lt;dockerhub-username&gt;/go-space:v1
+        </code>
+        </pre>
+        <h3 id="run-docker-file">Run docker file</h3>
+        <h4 id="environment-requirements">Environment Requirements</h4>
+        <pre>
+            <code>
+                SLACKBOT_ACCESS_TOKEN=&lt;BOT TOKEN&gt;
+                SLACKUSER_ACCESS_TOKEN=&lt;USER TOKEN&gt;
+                IMGUR_CLIENT_ID=&lt;KEY&gt;
+            </code>
+        </pre>
+        <p>It runs on port 3000 inside docker, so that port has been exported.</p>
+        <pre>
+            <code class="wrap-exception">
+                $ docker run -dp 3000:3000 -e IMGUR_CLIENT_ID=&lt;IMGUR_CLIENT_ID&gt; -e SLACKBOT_AUTH_TOKEN=&lt;SLACKBOT_AUTH_TOKEN&gt; -e SLACKUSER_AUTH_TOKEN=&lt;SLACKUSER_AUTH_TOKEN&gt; &lt;DOCKERHUB-USERNAME&gt;/imagery:v1
+            </code>
+        </pre>
+        <p>Now, configure the app on <a href="https://api.slack.com/">slack dev</a> for permissions and webhooks.</p>
+        <h2 id="usage">Usage</h2>
+        <h3 id="api-endpoints">API Endpoints</h3>
+        <p>
+            <code>/app</code> - the base route for event subscription endpoint.<br>
+            <code>/activity-route</code> - route for handling user activity through buttons.
+        </p>
+        <h2 id="contributing">Contributing</h2>
+        <p>Pull requests are welcome. For major changes, please open an issue first to discuss what you would like to change.</p>
+        <p>Thanks to <a href="https://github.com/chirag-ghosh">Chirag Ghosh</a> for helping me out in completing this :smile:</p>
+        <h2 id="license">License</h2>
+        <p><a href="https://choosealicense.com/licenses/mit/">MIT</a></p>
     </div>
     <img class="gopher" src="assets/gopher.png" alt="gopher" />
+    <script>hljs.highlightAll();</script>
 </body>
 </html>
