@@ -56,12 +56,12 @@ func downloadFile(permaLink string, file_id string, channel_id string, comment s
 	utils.Api.SendMessage(channel_id, slack.MsgOptionText(text, false))
 
 	// Delete File
-	err := utils.Api.DeleteFile(file_id)
+	err := utils.UserAuthedApi.DeleteFile(file_id)
 	if err != nil {
 		panic(err)
 	}
 
-	_, _, error := utils.Api.DeleteMessage(channel_id, timestamp)
+	_, _, error := utils.UserAuthedApi.DeleteMessage(channel_id, timestamp)
 	if err != nil && error.Error() != "message_not_found" {
 		panic(error)
 	}
