@@ -1,0 +1,127 @@
+* {
+    margin: 0;
+    padding: 0;
+    box-sizing: border-box;
+    scrollbar-width: thin;
+}
+
+*::-webkit-scrollbar-track {
+    border-radius: 100px;
+}
+
+*::-webkit-scrollbar {
+    width: 8px;
+}
+
+*::-webkit-scrollbar-thumb {
+    background: linear-gradient(to bottom right, #242F9B, #34B3F1);
+    border-radius: 100px;
+}
+
+body {
+    background-color: #191A19;
+    font-family: 'Noto Emoji', sans-serif;
+    font-family: 'Roboto', sans-serif;
+    overflow-x: hidden;
+    scrollbar-gutter: stable;
+}
+
+code {
+    font-family: 'Roboto Mono', monospace;
+}
+
+.content {
+    width: 69rem;
+    max-width: 90%;
+    display: flex;
+    flex-direction: column;
+    margin: 2rem auto 10rem auto;
+    color: #A5BECC;
+}
+
+.content p {
+    font-size: 1.4rem;
+}
+
+.content ul {
+    padding-left: 1rem;
+}
+
+.content li {
+    font-size: 1.3rem;
+    line-height: 2rem;
+    margin: 1rem 0;
+}
+
+.content p code,  .content li code{
+    background-color: #454545;
+    padding: 0 0.4rem;
+    margin: 0 0.2rem;
+    border-radius: 5px;
+}
+
+.title {
+    background: linear-gradient(to bottom right, #242F9B, #34B3F1);
+    background-clip: text;
+    -webkit-background-clip: text;
+    -webkit-text-fill-color: transparent;
+    color: #34B3F1;
+    font-size: 4rem;
+    font-weight: 500;
+    margin: 0.8rem;
+    text-align: center;
+}
+
+.subtitle {
+    color: #A5BECC;
+    font-size: 1.6rem;
+    font-weight: 400;
+    margin: 0.2rem 0 2.5rem 0;
+    text-align: center;
+}
+
+.gopher {
+    position: fixed;
+    bottom: -2rem;
+    right: -2rem;
+    width: 15rem;
+    transform: rotateZ(-30deg);
+    opacity: 70%;
+}
+
+.content pre code {
+    white-space: pre-line;
+    border-radius: 10px;
+    padding-top: 0 !important;
+    scrollbar-gutter: stable;
+}
+
+.content pre .wrap-exception {
+    white-space: nowrap;
+    padding-top: 1em !important;
+}
+
+.content p {
+    margin: 0.8rem 0;
+}
+
+.content h2 {
+    margin: 2rem 0 0.5rem 0;
+    font-size: 2.5rem;
+}
+
+.content h3 {
+    margin: 1.5rem 0 0.5rem 0;
+    font-size: 2rem;
+}
+
+.content h4 {
+    margin: 1rem 0 0.3rem 0;
+    font-size: 1.5rem;
+}
+
+a {
+    color: #34B3F1;
+    font-style: italic;
+    opacity: 70%;
+}
