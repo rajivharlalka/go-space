@@ -47,7 +47,7 @@ Now, configure the app on [slack dev](https://api.slack.com/) for permissions an
 
 - Add `<base-url>/app` to event subscriptions, and add `file_shared` and `reaction_added` to Subscribe bot Events.
 - Add `channels:history` ,`chat:write`,`files:read`,`files:write`,`groups:history`,`incoming-webhook` and `reactions:read` to Bot Token scope.
-- Add `channels:history`,`files:read`,`files:write` and `groups:history` to user token scopes.
+- Add `channels:history`,`files:read`,`files:write`,`chat:write` and `groups:history` to user token scopes.
 - Add `<base-url>/activity-route` to interactivity to subscribe for button presses.
 
 ## Usage
