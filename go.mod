@@ -1,4 +1,4 @@
-module rajivharlalka/imagery-v2
+module rajivharlalka/go-space
 
 go 1.18
 

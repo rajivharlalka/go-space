@@ -7,7 +7,7 @@ import (
 	"regexp"
 	"strings"
 
-	"rajivharlalka/imagery-v2/utils"
+	"rajivharlalka/go-space/utils"
 
 	"github.com/gofiber/fiber/v2"
 	"github.com/slack-go/slack"
